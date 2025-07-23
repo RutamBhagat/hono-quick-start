@@ -28,7 +28,7 @@ export default function Home() {
       try {
         // TODO: Make this URL configurable via environment variables
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/health`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}`
         );
         if (response.ok) {
           interface HealthCheckResponse { healthy: boolean; }
