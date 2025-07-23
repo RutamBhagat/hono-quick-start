@@ -13,7 +13,7 @@ export const setUserContext = async (c: Context, next: Next) => {
   const userName = c.req.header("X-User-Name");
 
   if (!userId || !userName) {
-    throw new HTTPException(400, { res: errorResponse });
+    throw new HTTPException(401, { res: errorResponse });
   }
 
   c.set("user", {
@@ -28,16 +28,15 @@ export const createAdminAuth = async (c: Context, next: Next) => {
   const authHeader = c.req.header("Authorization");
 
   if (!authHeader || !authHeader.startsWith("Basic ")) {
-    return c.json({ error: "Unauthorized" }, 401);
+    throw new HTTPException(401, { res: errorResponse });
   }
 
   const encodedCredentials = authHeader.split(" ")[1];
   const decodedCredentials = atob(encodedCredentials);
   const [username, password] = decodedCredentials.split(":");
 
-  if (username === c.env.USERNAME && password === c.env.PASSWORD) {
-    await next();
-  } else {
-    return c.json({ error: "Unauthorized" }, 401);
+  if (username !== c.env.USERNAME && password !== c.env.PASSWORD) {
+    throw new HTTPException(403, { res: errorResponse });
   }
+  await next();
 };
