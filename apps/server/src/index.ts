@@ -6,6 +6,8 @@ import { logger } from "hono/logger";
 import { responseTimer, createAdminAuth, setUserContext } from "@/middleware";
 import { appRouter } from "@/routers";
 import type { AppEnv } from "@/types";
+import { trpcServer } from "@hono/trpc-server";
+import { createContext } from "@/lib/context";
 
 const app = new Hono<AppEnv>();
 
@@ -26,9 +28,14 @@ app.get("/", (c) => {
   return c.json({ healthy: true });
 });
 
-app.route("/ai", appRouter.ai);
-app.route("/posts", appRouter.posts);
-app.route('/admin', appRouter.admin);
-app.route('/api/v1', appRouter.api);
+app.use(
+  "/trpc/*",
+  trpcServer({
+    router: appRouter,
+    createContext: (_opts, context) => {
+      return createContext({ context });
+    },
+  })
+);
 
 export default app;

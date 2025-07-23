@@ -1,13 +1,16 @@
-import { posts } from "@/routers/posts";
-import { admin } from "@/routers/admin";
-import { api } from "@/routers/api";
-import { ai } from "@/routers/ai";
+import { protectedProcedure, publicProcedure, router } from "@/lib/trpc";
+import { todoRouter } from "@/routers/todo";
 
-export const appRouter = {
-  posts,
-  admin,
-  api,
-  ai
-};
-
+export const appRouter = router({
+  healthCheck: publicProcedure.query(() => {
+    return "OK";
+  }),
+  privateData: protectedProcedure.query(({ ctx }) => {
+    return {
+      message: "This is private",
+      user: ctx.session.user,
+    };
+  }),
+  todo: todoRouter,
+});
 export type AppRouter = typeof appRouter;
