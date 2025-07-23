@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { app } from "../helpers/test-utils";
+import { app } from "@/__tests__/helpers/test-utils";
 
 describe("API v1 hello route", () => {
   it("Should return 200 with valid name query", async () => {

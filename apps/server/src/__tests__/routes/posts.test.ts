@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { app, testData, createJSONRequest } from "../helpers/test-utils";
+import { app, testData, createJSONRequest } from "@/__tests__/helpers/test-utils";
 
 describe("Posts routes", () => {
   it("Should get post with id and page", async () => {

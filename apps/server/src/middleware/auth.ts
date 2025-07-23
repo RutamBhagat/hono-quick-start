@@ -1,6 +1,6 @@
 import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
-import type { AppEnv } from "../types";
+import type { AppEnv } from "@/types";
 
 const createErrorResponse = () => new Response("Unauthorized", {
   status: 401,

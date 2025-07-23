@@ -2,8 +2,8 @@
  * Shared test utilities for Hono application testing
  */
 
-import app from "../../index";
-import type { Bindings } from "../../types";
+import app from "@/index";
+import type { Bindings } from "@/types";
 
 /**
  * Mock environment that matches the Bindings type for comprehensive testing

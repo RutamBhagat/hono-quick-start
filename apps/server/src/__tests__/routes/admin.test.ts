@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { app, mockEnv, createAuthHeaders, testData } from "../helpers/test-utils";
+import { app, mockEnv, createAuthHeaders, testData } from "@/__tests__/helpers/test-utils";
 
 describe("Admin routes", () => {
   it("Should require authentication", async () => {

@@ -1,2 +1,2 @@
-export * from "./auth";
-export * from "./timing";
+export * from "@/middleware/auth";
+export * from "@/middleware/timing";

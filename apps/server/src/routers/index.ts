@@ -1,6 +1,6 @@
-import { posts } from "./posts";
-import { admin } from "./admin";
-import { api } from "./api";
+import { posts } from "@/routers/posts";
+import { admin } from "@/routers/admin";
+import { api } from "@/routers/api";
 
 export const appRouter = {
   posts,
