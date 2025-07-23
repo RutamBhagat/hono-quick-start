@@ -1,11 +1,19 @@
 import type { Context, Next } from "hono";
+import { HTTPException } from "hono/http-exception";
+
+const errorResponse = new Response("Unauthorized", {
+  status: 401,
+  headers: {
+    Authenticate: 'error="invalid_token"',
+  },
+});
 
 export const setUserContext = async (c: Context, next: Next) => {
   const userId = c.req.header("X-User-ID");
   const userName = c.req.header("X-User-Name");
 
   if (!userId || !userName) {
-    return;
+    throw new HTTPException(400, { res: errorResponse });
   }
 
   c.set("user", {
