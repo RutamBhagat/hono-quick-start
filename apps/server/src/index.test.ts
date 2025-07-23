@@ -36,3 +36,12 @@ describe("Posts routes", () => {
     expect(await res.text()).toBe("");
   });
 });
+
+describe("Admin routes", () => {
+  it("Should return welcome message", async () => {
+    const res = await app.request("/admin");
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data).toEqual({ message: "Welcome to the admin panel!" });
+  });
+});
