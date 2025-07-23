@@ -1,9 +1,11 @@
-import { Context, Next } from "hono";
+import type { Context, Next } from "hono";
 
 export type Bindings = {
   CORS_ORIGIN: string;
   DATABASE_URL?: string;
   JWT_SECRET?: string;
+  USERNAME: string;
+  PASSWORD: string;
 };
 
 export type Variables = {
