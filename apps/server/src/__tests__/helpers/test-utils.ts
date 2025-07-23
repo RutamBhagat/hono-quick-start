@@ -4,6 +4,9 @@
 
 import app from "@/index";
 import type { Bindings } from "@/types";
+import { appRouter } from "@/routers";
+import { createContext } from "@/lib/context";
+import type { AppRouter } from "@/routers";
 
 /**
  * Mock environment that matches the Bindings type for comprehensive testing
@@ -54,6 +57,24 @@ export const createAuthHeaders = (
  * Test app instance for consistent testing
  */
 export { app };
+
+/**
+ * Helper to create tRPC caller for testing (unauthenticated)
+ */
+export const createCaller = () => {
+  const ctx = { session: null };
+  return appRouter.createCaller(ctx);
+};
+
+/**
+ * Helper to create authenticated tRPC caller for testing
+ */
+export const createAuthenticatedCaller = (user: { id: string; name: string }) => {
+  const ctx = { 
+    session: { user }
+  };
+  return appRouter.createCaller(ctx);
+};
 
 /**
  * Helper to create JSON request body

@@ -1,38 +1,22 @@
 import { describe, it, expect } from "vitest";
-import { app, mockEnv, createAuthHeaders, testData } from "@/__tests__/helpers/test-utils";
+import { createCaller, createAuthenticatedCaller, testData } from "@/__tests__/helpers/test-utils";
+import { TRPCError } from "@trpc/server";
 
-describe("Admin routes", () => {
+describe("Admin tRPC routes", () => {
   it("Should require authentication", async () => {
-    const res = await app.request("/admin", {}, mockEnv);
-    expect(res.status).toBe(401);
+    const caller = createCaller();
+    await expect(() => caller.admin.welcome()).rejects.toThrow(TRPCError);
   });
 
-  it("Should allow access with valid credentials", async () => {
-    const res = await app.request(
-      "/admin",
-      {
-        headers: createAuthHeaders(testData.validCredentials, {
-          "X-User-ID": testData.sampleUserId,
-          "X-User-Name": testData.sampleUserName,
-        }),
-      },
-      mockEnv
-    );
-    expect(res.status).toBe(200);
-    const data = await res.json() as { message: string };
-    expect(data).toEqual({
+  it("Should allow access with valid session", async () => {
+    const caller = createAuthenticatedCaller({
+      id: testData.sampleUserId,
+      name: testData.sampleUserName
+    });
+    
+    const result = await caller.admin.welcome();
+    expect(result).toEqual({
       message: `Welcome ${testData.sampleUserName} with ID: ${testData.sampleUserId}`,
     });
-  });
-
-  it("Should reject invalid credentials", async () => {
-    const res = await app.request(
-      "/admin",
-      {
-        headers: createAuthHeaders(testData.invalidCredentials),
-      },
-      mockEnv
-    );
-    expect(res.status).toBe(401);
   });
 });
