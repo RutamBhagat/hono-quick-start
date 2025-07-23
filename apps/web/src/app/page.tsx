@@ -27,7 +27,9 @@ export default function Home() {
     const checkHealth = async () => {
       try {
         // TODO: Make this URL configurable via environment variables
-        const response = await fetch('http://localhost:3000/api/health');
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/health`
+        );
         if (response.ok) {
           interface HealthCheckResponse { healthy: boolean; }
           const data: HealthCheckResponse = await response.json();
