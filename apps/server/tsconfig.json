@@ -13,7 +13,6 @@
     "outDir": "./dist",
     "types": [
       "./worker-configuration",
-      "node"
     ],
     "composite": true,
     "jsx": "react-jsx",

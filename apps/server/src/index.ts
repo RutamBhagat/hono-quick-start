@@ -24,4 +24,8 @@ app.get("/", (c) => {
   return c.text("OK");
 });
 
+app.get("/api/health", (c) => {
+  return c.json({ healthy: true });
+});
+
 export default app;
