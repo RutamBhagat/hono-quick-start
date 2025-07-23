@@ -3,12 +3,11 @@ import { auth } from "./lib/auth";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { posts } from "./routers/posts";
-import { admin } from "./routers/admin";
-import { api } from "./routers/api";
 import { responseTimer, createAdminAuth, setUserContext } from "./middleware";
+import { appRouter } from "./routers";
+import type { AppEnv } from "./types";
 
-const app = new Hono();
+const app = new Hono<AppEnv>();
 
 app.use(logger());
 app.use("/*", cors({
@@ -27,8 +26,8 @@ app.get("/", (c) => {
   return c.json({ healthy: true });
 });
 
-app.route('/posts', posts);
-app.route('/admin', admin);
-app.route('/api/v1', api);
+app.route("/posts", appRouter.posts);
+app.route('/admin', appRouter.admin);
+app.route('/api/v1', appRouter.api);
 
 export default app;

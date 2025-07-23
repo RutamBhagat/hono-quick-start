@@ -1,7 +1,8 @@
 import { Hono } from "hono";
 import { setUserContext, createAdminAuth } from "../middleware";
+import type { AppEnv } from "../types";
 
-const admin = new Hono();
+const admin = new Hono<AppEnv>();
 
 admin.use("*", createAdminAuth, setUserContext);
 
