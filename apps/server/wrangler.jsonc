@@ -24,8 +24,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "YOUR_DB_NAME",
-      "database_id": "YOUR_DB_ID",
+      "database_name": "hono-better",
+      "database_id": "77ebebb1-d2cf-48fd-b776-7b835960b3d6",
       "preview_database_id": "local-test-db",
       "migrations_dir": "./src/db/migrations"
     }
