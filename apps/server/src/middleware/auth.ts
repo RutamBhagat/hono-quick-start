@@ -27,8 +27,7 @@ export const createAdminAuth = async (c: Context, next: Next) => {
   const decodedCredentials = atob(encodedCredentials);
   const [username, password] = decodedCredentials.split(":");
 
-  // Dummy authentication check
-  if (username === "admin" && password === "secret") {
+  if (username === c.env.USERNAME && password === c.env.PASSWORD) {
     await next();
   } else {
     return c.json({ error: "Unauthorized" }, 401);
