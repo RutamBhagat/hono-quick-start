@@ -9,7 +9,7 @@ describe("Root route", () => {
 
   it("Should return correct message", async () => {
     const res = await app.request("/");
-    const data = await res.json();
+    const data = await res.json() as { healthy: boolean };
     expect(data).toEqual({ healthy: true });
   });
 

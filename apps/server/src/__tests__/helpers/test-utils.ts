@@ -3,11 +3,23 @@
  */
 
 import app from "../../index";
+import type { Bindings } from "../../types";
 
 /**
- * Mock environment for testing admin routes
+ * Mock environment that matches the Bindings type for comprehensive testing
  */
-export const mockEnv = { 
+export const mockEnv: Bindings = {
+  CORS_ORIGIN: "http://localhost:3000",
+  DATABASE_URL: "file:./test.db",
+  JWT_SECRET: "test-jwt-secret-key",
+  USERNAME: "admin",
+  PASSWORD: "secret",
+};
+
+/**
+ * Minimal mock environment for basic admin testing
+ */
+export const mockAdminEnv = { 
   USERNAME: "admin", 
   PASSWORD: "secret" 
 };
@@ -44,6 +56,56 @@ export const createAuthHeaders = (
 export { app };
 
 /**
+ * Helper to create JSON request body
+ * @param data - Object to convert to JSON
+ * @returns Request init with JSON body and headers
+ */
+export const createJSONRequest = (data: Record<string, unknown>) => ({
+  method: "POST",
+  body: JSON.stringify(data),
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+/**
+ * Helper to create FormData request body
+ * @param data - Object to convert to FormData
+ * @returns Request init with FormData body
+ */
+export const createFormDataRequest = (data: Record<string, string | File>) => {
+  const formData = new FormData();
+  Object.entries(data).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+  return {
+    method: "POST",  
+    body: formData,
+  };
+};
+
+/**
+ * Mock D1 database for testing
+ */
+export const mockD1 = {
+  prepare: (_query: string) => ({
+    bind: (..._params: unknown[]) => ({
+      first: () => Promise.resolve(null),
+      all: () => Promise.resolve({ results: [], success: true }),
+      run: () => Promise.resolve({ success: true, meta: { changes: 1 } }),
+    }),
+  }),
+};
+
+/**
+ * Enhanced mock environment with database bindings
+ */
+export const mockEnvWithDB: Bindings & { DB: typeof mockD1 } = {
+  ...mockEnv,
+  DB: mockD1,
+};
+
+/**
  * Common test data and mock values
  */
 export const testData = {
@@ -53,4 +115,6 @@ export const testData = {
   sampleUserName: "TestUser",
   samplePostId: "123",
   samplePage: "1",
+  sampleJSON: { message: "hello hono", type: "test" },
+  sampleFormData: { message: "hello", file: "test.txt" },
 };

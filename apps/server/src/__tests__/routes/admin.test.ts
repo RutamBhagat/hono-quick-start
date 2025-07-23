@@ -19,7 +19,7 @@ describe("Admin routes", () => {
       mockEnv
     );
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = await res.json() as { message: string };
     expect(data).toEqual({
       message: `Welcome ${testData.sampleUserName} with ID: ${testData.sampleUserId}`,
     });

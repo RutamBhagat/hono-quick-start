@@ -1,12 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { app, testData } from "../helpers/test-utils";
+import { app, testData, createJSONRequest } from "../helpers/test-utils";
 
 describe("Posts routes", () => {
   it("Should get post with id and page", async () => {
     const res = await app.request(`/posts/${testData.samplePostId}?page=${testData.samplePage}`);
     expect(res.status).toBe(200);
     expect(res.headers.get("X-Message")).toBe("Hi!");
-    const data = await res.json();
+    const data = await res.json() as { message: string };
     expect(data).toEqual({
       message: `You want to see page: ${testData.samplePage} of post: ${testData.samplePostId}`,
     });
@@ -17,12 +17,21 @@ describe("Posts routes", () => {
     expect(res.status).toBe(400);
   });
 
-  it("Should create new post", async () => {
+  it("Should create new post with empty body", async () => {
     const res = await app.request("/posts", {
       method: "POST",
     });
     expect(res.status).toBe(201);
-    const data = await res.json();
+    const data = await res.json() as { message: string };
+    expect(data).toEqual({
+      message: "Post created successfully.",
+    });
+  });
+
+  it("Should create new post with JSON data", async () => {
+    const res = await app.request("/posts", createJSONRequest(testData.sampleJSON));
+    expect(res.status).toBe(201);
+    const data = await res.json() as { message: string };
     expect(data).toEqual({
       message: "Post created successfully.",
     });

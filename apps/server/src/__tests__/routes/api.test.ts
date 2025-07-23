@@ -5,7 +5,7 @@ describe("API v1 hello route", () => {
   it("Should return 200 with valid name query", async () => {
     const res = await app.request("/api/v1/hello?name=World");
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = await res.json() as { message: string };
     expect(data).toEqual({ message: "Hello World!" });
   });
 
