@@ -1,13 +1,15 @@
 "use client";
 import Link from "next/link";
 
-import { ModeToggle } from "@/components/mode-toggle";
-import UserMenu from "@/components/user-menu";
+import { ModeToggle } from "./mode-toggle";
+import UserMenu from "./user-menu";
 
 export default function Header() {
   const links = [
     { to: "/", label: "Home" },
       { to: "/dashboard", label: "Dashboard" },
+    { to: "/todos", label: "Todos" },
+    { to: "/ai", label: "AI Chat" },
   ];
 
   return (
