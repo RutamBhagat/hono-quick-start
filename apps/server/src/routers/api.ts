@@ -1,27 +1,24 @@
-import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
+import { publicProcedure, router } from "@/lib/trpc";
 
-const api = new Hono();
+export const apiRouter = router({
+  hello: publicProcedure
+    .input(z.object({ name: z.string() }))
+    .query(async ({ input }) => {
+      return { message: `Hello ${input.name}!` };
+    }),
 
-api.get(
-  "/hello",
-  zValidator("query", z.object({ name: z.string() })),
-  async (c) => {
-    const { name } = c.req.valid("query");
-    return c.json({ message: `Hello ${name}!` }, 200);
-  }
-);
+  endpoint: router({
+    get: publicProcedure.query(() => {
+      return { message: "GET /endpoint" };
+    }),
 
-api
-  .get("/endpoint", (c) => {
-    return c.json({ message: "GET /endpoint" }, 200);
-  })
-  .post((c) => {
-    return c.json({ message: "POST /endpoint" }, 201);
-  })
-  .delete((c) => {
-    return c.body(null, 204);
-  });
+    create: publicProcedure.mutation(() => {
+      return { message: "POST /endpoint" };
+    }),
 
-export { api };
+    delete: publicProcedure.mutation(() => {
+      return { success: true };
+    }),
+  }),
+});

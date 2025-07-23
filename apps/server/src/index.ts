@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { responseTimer, createAdminAuth, setUserContext } from "@/middleware";
+import { responseTimer } from "@/middleware";
 import { appRouter } from "@/routers";
 import type { AppEnv } from "@/types";
 import { trpcServer } from "@hono/trpc-server";
