@@ -69,9 +69,31 @@ export const createCaller = () => {
 /**
  * Helper to create authenticated tRPC caller for testing
  */
-export const createAuthenticatedCaller = (user: { id: string; name: string }) => {
+export const createAuthenticatedCaller = (userData: { id: string; name: string; email?: string }) => {
+  const user = {
+    id: userData.id,
+    name: userData.name,
+    email: userData.email || `${userData.id}@test.com`,
+    emailVerified: true,
+    image: null,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+  
   const ctx = { 
-    session: { user }
+    session: {
+      session: {
+        id: "test-session",
+        userId: user.id,
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours from now
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        token: "test-token",
+        ipAddress: null,
+        userAgent: null
+      },
+      user
+    }
   };
   return appRouter.createCaller(ctx);
 };
