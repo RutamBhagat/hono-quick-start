@@ -1,7 +1,7 @@
 import type { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 
-const errorResponse = new Response("Unauthorized", {
+const createErrorResponse = () => new Response("Unauthorized", {
   status: 401,
   headers: {
     Authenticate: 'error="invalid_token"',
@@ -13,7 +13,7 @@ export const setUserContext = async (c: Context, next: Next) => {
   const userName = c.req.header("X-User-Name");
 
   if (!userId || !userName) {
-    throw new HTTPException(401, { res: errorResponse });
+    throw new HTTPException(401, { res: createErrorResponse() });
   }
 
   c.set("user", {
@@ -28,7 +28,7 @@ export const createAdminAuth = async (c: Context, next: Next) => {
   const authHeader = c.req.header("Authorization");
 
   if (!authHeader || !authHeader.startsWith("Basic ")) {
-    throw new HTTPException(401, { res: errorResponse });
+    throw new HTTPException(401, { res: createErrorResponse() });
   }
 
   const encodedCredentials = authHeader.split(" ")[1];
@@ -36,7 +36,7 @@ export const createAdminAuth = async (c: Context, next: Next) => {
   const [username, password] = decodedCredentials.split(":");
 
   if (username !== c.env.USERNAME && password !== c.env.PASSWORD) {
-    throw new HTTPException(403, { res: errorResponse });
+    throw new HTTPException(403, { res: createErrorResponse() });
   }
   await next();
 };
