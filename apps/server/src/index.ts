@@ -26,6 +26,7 @@ app.get("/", (c) => {
   return c.json({ healthy: true });
 });
 
+app.route("/ai", appRouter.ai);
 app.route("/posts", appRouter.posts);
 app.route('/admin', appRouter.admin);
 app.route('/api/v1', appRouter.api);
